@@ -1,16 +1,12 @@
 package com.findzero.ejb.repository.impl;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
+import javax.persistence.Query;
 
 import com.findzero.ejb.model.Like;
-import com.findzero.ejb.model.Product;
 import com.findzero.ejb.repository.RepositoryBase;
 
 public class LikeRepositoryImpl extends RepositoryBase<Like> implements LikeRepository {
@@ -19,22 +15,46 @@ public class LikeRepositoryImpl extends RepositoryBase<Like> implements LikeRepo
 		super(em);
 	}
 
-	
-	
 	@Override
-	public List<Like> findByProduct(Product p) throws Exception {
-		CriteriaBuilder cb = super.getEntityManager().getCriteriaBuilder();  
-		CriteriaQuery<Like> c = cb.createQuery(Like.class);
-		Root<Like> like = c.from(Like.class);
+	public List<Like> findByProduct(Long idProduct) throws Exception {
+		Query query = this.getEntityManager().createNativeQuery("SELECT l.* FROM likes l WHERE l.codproduct = :id",
+				Like.class);
 
-		//like.fetch("comments",JoinType.LEFT);
-		TypedQuery<Like> typedQuery= super.getEntityManager().createQuery(c);  
-		List<Like> listLikes = typedQuery.getResultList();
-		//for (Like like2 : listLikes) {
-			//super.getEntityManager().detach(like2);
-		//}
-		return listLikes;
-		
+		query.setParameter("id", idProduct);
+		List<Like> likes = query.getResultList();
+		return likes;
+	}
+
+	@Override
+	public Integer countByProduct(Long idProduct) throws Exception {
+		Query query = this.getEntityManager()
+				.createNativeQuery("SELECT count(l.*) FROM likes l WHERE l.codproduct = :id");
+
+		query.setParameter("id", idProduct);
+
+		return ((BigInteger) query.getSingleResult()).intValue();
+	}
+
+	/**
+	 * Busca os comentarios todos os usuarios
+	 */
+	@Override
+	public List<Like> findByUser(Long idUser) throws Exception {
+		Query query = this.getEntityManager().createNativeQuery("SELECT l.* FROM likes l WHERE l.codusers = :id",
+				Like.class);
+		query.setParameter("id", idUser);
+		List<Like> likes = query.getResultList();
+		return likes;
+	}
+
+	@Override
+	public Integer countByUser(Long idUser) throws Exception {
+
+		Query query = this.getEntityManager()
+				.createNativeQuery("SELECT count(l.*) FROM likes l WHERE l.codusers = :id");
+
+		query.setParameter("id", idUser);
+		return ((BigInteger) query.getSingleResult()).intValue();
 	}
 
 }

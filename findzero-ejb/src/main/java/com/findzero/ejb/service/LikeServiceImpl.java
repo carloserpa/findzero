@@ -10,7 +10,6 @@ import javax.ejb.TransactionManagementType;
 import javax.interceptor.Interceptors;
 
 import com.findzero.ejb.model.Like;
-import com.findzero.ejb.model.Product;
 import com.findzero.ejb.repository.InjectRepository;
 import com.findzero.ejb.repository.RepositoryAnnotation;
 import com.findzero.ejb.repository.impl.LikeRepositoryImpl;
@@ -52,7 +51,22 @@ public class LikeServiceImpl implements LikeService {
 	}
 
 	@Override
-	public List<Like> findByProduct(Product p) throws Exception {
-		return likeRepositoryImpl.findByProduct(p);
+	public List<Like> findByProduct(Long idProduct) throws Exception {
+		return likeRepositoryImpl.findByProduct(idProduct);
+	}
+
+	@Override
+	public Integer countByProduct(Long idProduct) throws Exception {
+		return likeRepositoryImpl.countByProduct(idProduct);
+	}
+
+	@Override
+	public List<Like> findByUser(Long idUser) throws Exception {
+		return likeRepositoryImpl.findByUser(idUser);
+	}
+
+	@Override
+	public Integer countByUser(Long idUser) throws Exception {
+		return likeRepositoryImpl.countByUser(idUser);
 	}
 }

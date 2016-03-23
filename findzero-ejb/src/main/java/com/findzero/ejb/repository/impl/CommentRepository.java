@@ -1,6 +1,5 @@
 package com.findzero.ejb.repository.impl;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import com.findzero.ejb.model.Comment;

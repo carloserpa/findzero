@@ -71,7 +71,8 @@ public class Like implements Serializable, EntityBase {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-
+	
+	@JsonIgnore
 	public User getUser() {
 		return this.user;
 	}
