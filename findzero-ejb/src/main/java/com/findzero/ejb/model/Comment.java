@@ -33,8 +33,6 @@ public class Comment implements Serializable, EntityBase {
 	private Timestamp datelog;
 
 	private String description;
-	@Transient
-	private Integer commentCount = 10;
 
 	// bi-directional many-to-one association to Product
 	// @LazyCollection(LazyCollectionOption.FALSE)
@@ -95,14 +93,6 @@ public class Comment implements Serializable, EntityBase {
 	@Override
 	public Serializable getId() {
 		return this.codcomment;
-	}
-
-	public Integer getCommentCount() {
-		return commentCount;
-	}
-
-	public void setCommentCount(Integer commentCount) {
-		this.commentCount = commentCount;
 	}
 
 }

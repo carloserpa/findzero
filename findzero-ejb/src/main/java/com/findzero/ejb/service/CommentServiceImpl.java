@@ -1,5 +1,6 @@
 package com.findzero.ejb.service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.ejb.Stateful;
@@ -10,7 +11,6 @@ import javax.ejb.TransactionManagementType;
 import javax.interceptor.Interceptors;
 
 import com.findzero.ejb.model.Comment;
-import com.findzero.ejb.model.Product;
 import com.findzero.ejb.repository.InjectRepository;
 import com.findzero.ejb.repository.RepositoryAnnotation;
 import com.findzero.ejb.repository.impl.CommentRepositoryImpl;
@@ -27,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
 		commentRepositoryImpl.save(entity);
 		
 	}
-
+	
 	@Override
 	public void alter(Comment entity) throws Exception {
 		commentRepositoryImpl.save(entity);
@@ -52,7 +52,25 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<Comment> findByProduct(Product p) throws Exception {
-		return commentRepositoryImpl.findByProduct(p);
+	public List<Comment> findByProduct(Long idProduct) throws Exception {
+		return commentRepositoryImpl.findByProduct(idProduct);
 	}
+
+	@Override
+	public Integer countByProduct(Long idProduct) throws Exception {
+		return commentRepositoryImpl.countByProduct(idProduct);
+	}
+
+	@Override
+	public List<Comment> findByUser(Long idUser) throws Exception {
+		return commentRepositoryImpl.findByUser(idUser);
+	}
+
+	@Override
+	public Integer countByUser(Long idUser) throws Exception {
+		return commentRepositoryImpl.countByUser(idUser);
+	}
+
+	
+	
 }

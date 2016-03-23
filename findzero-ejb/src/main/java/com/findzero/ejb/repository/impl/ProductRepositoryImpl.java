@@ -40,29 +40,30 @@ public class ProductRepositoryImpl extends RepositoryBase<Product> implements Pr
 	}
 
 	public List<ProductVO> findAllProductVO() throws Exception {
-		Query query = this.getEntityManager()
-				.createNativeQuery(
-						"SELECT P.CODPRODUCT as codProduct, "+
-						"P.DESCRIPTION as description, "+
-						"P.PRICE as price, "+
-						"P.LOCATIONNAME as locationName, "+
-						"P.LOCATIONCOOD as locationCood, "+
-						"PI.URL as url, "+
-						"COUNT(C.CODCOMMENT) as comments, "+
-						"COUNT(DISTINCT L.CODLIKES) as likes "+
-						"FROM PRODUCT P "+
-						"LEFT JOIN COMMENT C "+
-						"ON P.CODPRODUCT = C.CODPRODUCT "+
-						"LEFT JOIN LIKES L "+
-						"ON P.CODPRODUCT = L.CODPRODUCT "+
-						"LEFT JOIN PICTURE PI "+
-						"ON PI.CODPRODUCT = P.CODPRODUCT "+
-						"AND PI.PRINCIPAL = TRUE "+
-						"GROUP BY P.CODPRODUCT, "+
-						"P.DESCRIPTION, "+
-						"P.PRICE, "+
-						"PI.URL",
-						ProductVO.class);
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT P.CODPRODUCT as codProduct, ");
+		sql.append("P.DESCRIPTION as description, ");
+		sql.append("P.PRICE as price, ");
+		sql.append("P.LOCATIONNAME as locationName, ");
+		sql.append("P.LOCATIONNAME as locationName, ");
+		sql.append("P.LOCATIONCOOD as locationCood, ");
+		sql.append("PI.URL as url, ");
+		sql.append("COUNT(C.CODCOMMENT) as comments, ");
+		sql.append("COUNT(DISTINCT L.CODLIKES) as likes ");
+		sql.append("FROM PRODUCT P ");
+		sql.append("LEFT JOIN COMMENT C ");
+		sql.append("ON P.CODPRODUCT = C.CODPRODUCT ");
+		sql.append("LEFT JOIN LIKES L ");
+		sql.append("ON P.CODPRODUCT = L.CODPRODUCT ");
+		sql.append("LEFT JOIN PICTURE PI ");
+		sql.append("ON PI.CODPRODUCT = P.CODPRODUCT ");
+		sql.append("AND PI.PRINCIPAL = TRUE ");
+		sql.append("GROUP BY P.CODPRODUCT, ");
+		sql.append("P.DESCRIPTION, ");
+		sql.append("P.PRICE, ");
+		sql.append("PI.URL");
+		
+		Query query = this.getEntityManager().createNativeQuery(sql.toString(),	ProductVO.class);
 		List<ProductVO> products = query.getResultList();
 		return products;
 	}

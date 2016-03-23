@@ -1,10 +1,18 @@
 package com.findzero.ejb.service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import com.findzero.ejb.model.Comment;
-import com.findzero.ejb.model.Product;
 
 public interface CommentService extends ServiceBase<Comment>{
-	public List<Comment> findByProduct(Product p) throws Exception;	
+	
+	public List<Comment> findByProduct(Long idProduct) throws Exception;
+	public Integer countByProduct(Long idProduct) throws Exception;
+	
+	
+	public List<Comment> findByUser(Long idUser) throws Exception;
+	public Integer countByUser(Long idUser) throws Exception;
+	
 }
+

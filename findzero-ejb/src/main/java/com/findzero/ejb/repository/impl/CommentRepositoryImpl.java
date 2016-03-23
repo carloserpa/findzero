@@ -1,15 +1,12 @@
 package com.findzero.ejb.repository.impl;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.Query;
 
 import com.findzero.ejb.model.Comment;
-import com.findzero.ejb.model.Product;
 import com.findzero.ejb.repository.RepositoryBase;
 
 public class CommentRepositoryImpl extends RepositoryBase<Comment> implements CommentRepository {
@@ -19,19 +16,45 @@ public class CommentRepositoryImpl extends RepositoryBase<Comment> implements Co
 	}
 
 	@Override
-	public List<Comment> findByProduct(Product p) throws Exception {
-		CriteriaBuilder cb = super.getEntityManager().getCriteriaBuilder();  
-		CriteriaQuery<Comment> c = cb.createQuery(Comment.class);
-		Root<Comment> comment = c.from(Comment.class);
-		//comment.fetch("comments",JoinType.LEFT);
-		TypedQuery<Comment> typedQuery= super.getEntityManager().createQuery(c);  
-		List<Comment> listComments = typedQuery.getResultList();
-		//for (Comment comment2 : listComments) {
-			//super.getEntityManager().detach(comment2);
-		//}
-		return listComments;
-		//return super.findAll(Comment.class);
-		
+	public List<Comment> findByProduct(Long idProduct) throws Exception {
+		Query query = this.getEntityManager().createNativeQuery("SELECT c.* FROM comment c WHERE c.codproduct = :id",
+				Comment.class);
+
+		query.setParameter("id", idProduct);
+		List<Comment> comments = query.getResultList();
+		return comments;
+	}
+
+	@Override
+	public Integer countByProduct(Long idProduct) throws Exception {
+		Query query = this.getEntityManager()
+				.createNativeQuery("SELECT count(c.*) FROM comment c WHERE c.codproduct = :id");
+
+		query.setParameter("id", idProduct);
+
+		return ((BigInteger) query.getSingleResult()).intValue();
+	}
+
+	/**
+	 * Busca os comentarios todos os usuarios
+	 */
+	@Override
+	public List<Comment> findByUser(Long idUser) throws Exception {
+		Query query = this.getEntityManager().createNativeQuery("SELECT c.* FROM comment c WHERE c.codusers = :id",
+				Comment.class);
+		query.setParameter("id", idUser);
+		List<Comment> comments = query.getResultList();
+		return comments;
+	}
+
+	@Override
+	public Integer countByUser(Long idUser) throws Exception {
+
+		Query query = this.getEntityManager()
+				.createNativeQuery("SELECT count(c.*) FROM comment c WHERE c.codusers = :id");
+
+		query.setParameter("id", idUser);
+		return ((BigInteger) query.getSingleResult()).intValue();
 	}
 
 }
